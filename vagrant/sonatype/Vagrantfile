@@ -5,7 +5,6 @@ Vagrant.configure("2") do |config|
   
   config.vm.box = "centos/7"
 
-  config.vm.network "forwarded_port", guest: 8080, host: 8080
   config.vm.network "forwarded_port", guest: 8081, host: 8081
   config.vm.network "forwarded_port", guest: 8070, host: 8070
 
@@ -14,13 +13,12 @@ Vagrant.configure("2") do |config|
   chown -R vagrant:vagrant /opt/sonatype
   EOS
     
-  config.vm.provision :shell, path: "installs/wget.sh"
+  config.vm.provision :shell, path: "installs/tools.sh"
   config.vm.provision :shell, path: "installs/java.sh"
-  config.vm.provision :shell, path: "installs/git.sh"
-  config.vm.provision :shell, path: "installs/ansible.sh"
   config.vm.provision :shell, path: "installs/nexus3.sh", privileged: false
-  config.vm.provision :shell, path: "installs/nexus-iq-cli.sh", privileged: false
-  config.vm.provision :shell, path: "installs/nexus-iq-server.sh", privileged: false
+  config.vm.provision :shell, path: "installs/nexus-iq.sh", privileged: false
+  #config.vm.provision :shell, path: "installs/nexus-lic.sh", privileged: false
+
 
   # config.vm.provision "docker" do |d|
   #   d.run "jenkins/jenkins", cmd: "bash -l", args: "-v 'jenkins_home:/var/jenkins_home' -p '8080:8080'"

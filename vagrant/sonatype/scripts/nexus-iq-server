@@ -1,5 +1,7 @@
 #!/bin/sh
 
+VERSION=$(grep nexus_iq /vagrant/installs/versions | cut -f2 -d':')
+
 # The following comment lines are used by the init setup script like the
 # chkconfig command for RedHat based distributions. Change as
 # appropriate for your installation.
@@ -15,7 +17,7 @@
 ### END INIT INFO
 
 NEXUS_IQ_SERVER_HOME=/opt/sonatype/nexus-iq-server
-VERSION=1.45.0-01
+
 JAVA_OPTIONS="-Xmx1024m -XX:MaxPermSize=128m"
 # The user ID which should be used to run the IQ Server
 # # IMPORTANT - Make sure that the user has the required privileges to write into the IQ Server work directory.

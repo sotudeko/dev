@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
+version=$(grep java /vagrant/installs/versions | cut -f2 -d':')
+
+javafile_name="jdk-${version}-linux-x64.rpm"
+
 javafile_url="http://download.oracle.com/otn-pub/java/jdk/8u162-b12/0da788060d494f5095bf8624735fa2f1"
-javafile_name="jdk-8u162-linux-x64.rpm"
 
 cd /vagrant/packages
 
