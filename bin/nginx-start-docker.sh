@@ -1,6 +1,6 @@
 #!/bin/bash
 
-docker run --name mynginx1 -P -d nginx
+docker run --name mynginx -P -d nginx
 
 # docker run \
 # 	--rm \
