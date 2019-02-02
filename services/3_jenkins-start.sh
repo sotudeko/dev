@@ -1,5 +1,5 @@
 #!/bin/bash
 
 cd /opt/jenkins
-java -jar jenkins-2.war
+java -jar jenkins.war
 echo http://localhost:8080
