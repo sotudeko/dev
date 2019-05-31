@@ -12,6 +12,8 @@ fi
 debug=
 user=admin
 passwd=admin123
+#iqserver=http://192.168.99.100:30070
+iqserver=http://localhost:8070
 
-java -jar /opt/nexus-iq/nexus-iq-cli -i ${app} -s http://localhost:8070 -a ${user}:${passwd} -t ${stage} ${sfile} ${debug}
+java -jar /opt/nxiq/nexus-iq-cli -i ${app} -s ${iqserver} -a ${user}:${passwd} -t ${stage} ${sfile} ${debug}
 
