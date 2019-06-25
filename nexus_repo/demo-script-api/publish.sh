@@ -11,6 +11,8 @@ set -u
 username=admin
 password=admin123
 
+scriptname=$1
+
 # add the context if you are not using the root context
 host=http://localhost:8081
 
@@ -26,7 +28,9 @@ function addScript {
 printf "Provisioning Integration API Scripts Starting \n\n"
 printf "Publishing and executing on $host\n"
 
-addScript demo_role_create role_create.groovy
-addScript demo_role_list role_list.groovy
+# addScript demo_role_create role_create.groovy
+# addScript demo_role_list role_list.groovy
+
+addScript ${scriptname} ${scriptname}.groovy
 
 printf "\nProvisioning Scripts Completed\n\n"
