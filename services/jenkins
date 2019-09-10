@@ -1,0 +1,3 @@
+#!/bin/bash
+
+/Users/sotudeko/Development/mygithub/dev/services/jenkins-start.sh $1
