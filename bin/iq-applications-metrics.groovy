@@ -40,17 +40,8 @@ class IQApplications {
             }
         }
 
-        // File[] files = dir.listFiles()
-
-        // for (File app: files){
-        //     if (!app.getName().startsWith(".")){
-        //         System.out.println(app.getName() + ':' + app.size())
-        //     }
-        // }
-
         println('Number of applications: ' + numberOfApplications)
         println()
-
     }
 
     static def countApplicationReports(applicationReportsDir){
@@ -61,7 +52,6 @@ class IQApplications {
         for (String reportId : reports) {
             if (!reportId.startsWith(".")){
                 numberOfReports++
-                //System.out.println('-->' + reportId)
             }
         }
 
@@ -108,7 +98,7 @@ class IQApplications {
             def applicationsJsonObject = jsonSlurper.parseText(applicationsContent)
 
             applicationsJsonObject.applications.each {
-                // println JsonOutput.prettyPrint(JsonOutput.toJson(it))
+                //println JsonOutput.prettyPrint(JsonOutput.toJson(it))
 
                 String applicationId = it.id
                 String applicationName = it.name
