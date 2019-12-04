@@ -8,6 +8,7 @@ if [[ $# -ne 1 ]];
 fi
 
 server_name=$1
+keystore_file=keystore.jks
 tmpdir=./tmp.$$
 mkdir ${tmpdir} && cd ${tmpdir}
 
@@ -16,28 +17,30 @@ mkdir ${tmpdir} && cd ${tmpdir}
 
 # Generate public private key pair using keytool
 echo step 1
-keytool -genkeypair -keystore keystore.jks -storepass password -alias ${server_name} \
+keytool -genkeypair -keystore ${keystore_file} -storepass password -alias ${server_name} \
  -keyalg RSA -keysize 2048 -validity 5000 -keypass password \
- -dname "CN=*.${server_name}, OU=Sonatype, O=Sonatype, L=Unspecified, ST=Unspecified, C=US" \
- -ext "SAN=DNS:nexus.${server_name},DNS:clm.${server_name},DNS:repo.${server_name},DNS:www.${server_name}"
+ -dname "CN=*.${server_name}, OU=Sonatype, O=Sonatype, L=London, ST=LOndon, C=GB" 
+ #-ext "SAN=DNS:nexus.${server_name},DNS:clm.${server_name},DNS:repo.${server_name},DNS:www.${server_name}"
  # -> keystore.jks
 
-
-
 # Convert Java specific keystore binary".jks" file to a widely compatible PKCS12 keystore ".p12" file
-echo step 3
-keytool -importkeystore -storepass password -srckeystore keystore.jks -destkeystore ${server_name}.p12 -deststoretype pkcs12
-# -> server_name.p12 
+echo step 2
+keytool -importkeystore -storepass password -srckeystore ${keystore_file} -destkeystore ${keystore_file} -deststoretype pkcs12
+# -> keystore.jks
+
+exit
 
 # Generate PEM encoded public certificate file using keytool
-echo step 2
-keytool -exportcert -keystore keystore.jks -storepass password -alias ${server_name} -rfc > ${server_name}.cert
+echo step 3
+keytool -exportcert -keystore ${keystore_file} -storepass password -alias ${server_name} -rfc > ${server_name}.cert
 # -> server_name.cert 
 
+# Extract a self signed X.509 certificate from the keystore
+#keytool -export -alias jetty -keystore keystore.jks -rfc -file nexus.cer
 
 # List and verify new keystore file contents
 echo step 4
-keytool -list -keystore ${server_name}.p12 -storepass password -storetype PKCS12
+keytool -list -keystore ${keystore_file} -storepass password -storetype PKCS12
 
 # Extract pem (certificate) from ".p12" keystore file ( this is same as step 2, but openssl spits out more verbose contents )
 echo step 5

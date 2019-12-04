@@ -9,9 +9,7 @@ class NXRM3Components {
       def repositoryUrl = args[0]
       def repositoryName = args[1]
 
-?p=${policyId} | python -m json.tool
-
-
+      def policyId = '2afbb0011e1f4190a1721824502fffa2'
 
       def endpoint = repositoryUrl + '/api/v2/policyViolations'
       def query = '?p=' + policyId
