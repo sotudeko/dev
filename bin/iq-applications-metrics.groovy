@@ -1,21 +1,23 @@
 import groovy.json.JsonSlurper
 import groovy.json.JsonOutput
 import static groovy.json.JsonOutput.*
-import groovy.cli.picocli.CliBuilder
+import static java.nio.charset.StandardCharsets.UTF_8
 
 
 class IQApplications {
 
+    static String repositoryUrl = 'http://localhost:8070'
+    static String iqUserAndPassword = 'admin:admin123'
+    static String iqReportsDir = '/opt/nxiq/sonatype-work/clm-server/report'
+
     static void main(String[] args) {
-        String iqReportsDir = '/opt/nxiq/sonatype-work/clm-server/report'
 
         def applicationsMap = getApplications()
-        
-        def cli = new CliBuilder()
 
-        cli.url(type: String, 'url-arg')
-        cli.name(type: String, 'name-arg')
-        cli.raw(type: Boolean, 'raw-arg')
+        if (applicationsMap.size() == 0){
+            println 'No applications in Nexus IQ'
+            System.exit(0)
+        }
 
         println()
         println('Nexus IQ Applications')
@@ -73,15 +75,48 @@ class IQApplications {
         println('  reports: ')
 
         for (entry in map.sort{it.key}) {
-            def epoch = entry.key
-            def fmt = new Date(epoch).format('MMM dd yyyy hh:mm:ss')
-            println "    $entry.value.name : $fmt [$epoch]"
+            def timeMs = entry.key
+            def fmt = new Date(timeMs).format('MMM dd yyyy hh:mm:ss')
+            println "    $entry.value.name : $fmt [$timeMs]"
         }   
     }
 
     static getApplications(){
+        def encoded = iqUserAndPassword.getBytes().encodeBase64().toString()
+         
         def map = [:]
-        def repositoryUrl = 'http://localhost:8070'
+
+        def endpoint = repositoryUrl + '/api/v2/applications'
+
+        def url = new URL(endpoint)
+        def applicationsConnection = url.openConnection()
+
+        applicationsConnection.requestMethod = 'GET'
+        applicationsConnection.setRequestProperty("Authorization", "Basic $encoded")
+
+        if (applicationsConnection.responseCode == 200) {
+            def applicationsContent = applicationsConnection.content.text
+
+            def jsonSlurper = new JsonSlurper()
+            def applicationsJsonObject = jsonSlurper.parseText(applicationsContent)
+
+            applicationsJsonObject.applications.each {
+                //println JsonOutput.prettyPrint(JsonOutput.toJson(it))
+
+                String applicationId = it.id
+                String applicationName = it.name
+                String contactName = it.contactUserName
+                String publicId = it.publicId
+
+                map[applicationId] = [name: applicationName, publicId: publicId, contactName: contactName]
+            }
+        }
+
+        return map
+    }
+
+    static getApplications2(){
+        def map = [:]
 
         def endpoint = repositoryUrl + '/api/v2/applications'
 
