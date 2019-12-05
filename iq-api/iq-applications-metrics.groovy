@@ -1,25 +1,34 @@
 import groovy.json.JsonSlurper
 import groovy.json.JsonOutput
 import static groovy.json.JsonOutput.*
-import groovy.cli.picocli.CliBuilder
+import static java.nio.charset.StandardCharsets.UTF_8
 
 
 class IQApplications {
 
+    static String repositoryUrl = 'http://localhost:8070'
+    static String iqUserAndPassword = 'admin:admin123'
+    static String iqSonatypeWorkDir = '/opt/nxiq/sonatype-work'
+
     static void main(String[] args) {
-        String iqReportsDir = '/opt/nxiq/sonatype-work/clm-server/report'
 
         def applicationsMap = getApplications()
-        
-        def cli = new CliBuilder()
 
-        cli.url(type: String, 'url-arg')
-        cli.name(type: String, 'name-arg')
-        cli.raw(type: Boolean, 'raw-arg')
+        if (applicationsMap.size() == 0){
+            println 'No applications found for Nexus IQ'
+            System.exit(0)
+        }
+
+        def iqReportsDir = iqSonatypeWorkDir + '/clm-server/report'
 
         println()
         println('Nexus IQ Applications')
         println()
+
+        if (!dirExists(iqReportsDir)){
+            println 'Could not find sonatype workdir'
+            System.exit(0)
+        }
 
         File dir = new File(iqReportsDir)
 
@@ -34,23 +43,23 @@ class IQApplications {
 
                 println('name: ' + applicationName)
                 println('  id: ' + applicationId )
-                println('  number of scans: ' + numberOfReports)
+                println('  number of reports (scans): ' + numberOfReports)
                 reportDates(iqReportsDir + '/' + applicationId)
                 println()
             }
         }
 
-        // File[] files = dir.listFiles()
-
-        // for (File app: files){
-        //     if (!app.getName().startsWith(".")){
-        //         System.out.println(app.getName() + ':' + app.size())
-        //     }
-        // }
-
         println('Number of applications: ' + numberOfApplications)
         println()
+    }
 
+    static Boolean dirExists(dir){
+        if (new File(dir).exists()){
+            return true
+        }
+        else {
+            return false
+        }
     }
 
     static def countApplicationReports(applicationReportsDir){
@@ -61,7 +70,6 @@ class IQApplications {
         for (String reportId : reports) {
             if (!reportId.startsWith(".")){
                 numberOfReports++
-                //System.out.println('-->' + reportId)
             }
         }
 
@@ -80,24 +88,51 @@ class IQApplications {
             }
         }
 
-        for (entry in map.sort{it.key}) {
-            def fmt = new Date(entry.key).format('EEE MMM dd hh:mm:ss a yyyy')
-            println "    $entry.value.name : $fmt [$entry.key]"
-        }   
+        println('  reports: ')
 
-        // println('  reports: ')
-        // for (File reportId : reports) {
-        //     if (!reportId.getName().startsWith(".")){
-        //         def epoch = reportId.lastModified()
-        //         def fmt = new Date(reportId.lastModified()).format('EEE MMM dd hh:mm:ss a yyyy')
-        //         System.out.println('    ' + reportId.getName() + ': ' + fmt)
-        //     }
-        // }
+        for (entry in map.sort{it.key}) {
+            def timeMs = entry.key
+            def fmt = new Date(timeMs).format('MMM dd yyyy hh:mm:ss')
+            println "    $entry.value.name : $fmt [$timeMs]"
+        }   
     }
 
     static getApplications(){
+        def encoded = iqUserAndPassword.getBytes().encodeBase64().toString()
+         
         def map = [:]
-        def repositoryUrl = 'http://localhost:8070'
+
+        def endpoint = repositoryUrl + '/api/v2/applications'
+
+        def url = new URL(endpoint)
+        def applicationsConnection = url.openConnection()
+
+        applicationsConnection.requestMethod = 'GET'
+        applicationsConnection.setRequestProperty("Authorization", "Basic $encoded")
+
+        if (applicationsConnection.responseCode == 200) {
+            def applicationsContent = applicationsConnection.content.text
+
+            def jsonSlurper = new JsonSlurper()
+            def applicationsJsonObject = jsonSlurper.parseText(applicationsContent)
+
+            applicationsJsonObject.applications.each {
+                //println JsonOutput.prettyPrint(JsonOutput.toJson(it))
+
+                String applicationId = it.id
+                String applicationName = it.name
+                String contactName = it.contactUserName
+                String publicId = it.publicId
+
+                map[applicationId] = [name: applicationName, publicId: publicId, contactName: contactName]
+            }
+        }
+
+        return map
+    }
+
+    static getApplications2(){
+        def map = [:]
 
         def endpoint = repositoryUrl + '/api/v2/applications'
 
@@ -114,7 +149,7 @@ class IQApplications {
             def applicationsJsonObject = jsonSlurper.parseText(applicationsContent)
 
             applicationsJsonObject.applications.each {
-                // println JsonOutput.prettyPrint(JsonOutput.toJson(it))
+                //println JsonOutput.prettyPrint(JsonOutput.toJson(it))
 
                 String applicationId = it.id
                 String applicationName = it.name
