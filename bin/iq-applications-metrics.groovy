@@ -8,20 +8,27 @@ class IQApplications {
 
     static String repositoryUrl = 'http://localhost:8070'
     static String iqUserAndPassword = 'admin:admin123'
-    static String iqReportsDir = '/opt/nxiq/sonatype-work/clm-server/report'
+    static String iqSonatypeWorkDir = '/opt/nxiq/sonatype-work'
 
     static void main(String[] args) {
 
         def applicationsMap = getApplications()
 
         if (applicationsMap.size() == 0){
-            println 'No applications in Nexus IQ'
+            println 'No applications found for Nexus IQ'
             System.exit(0)
         }
+
+        def iqReportsDir = iqSonatypeWorkDir + '/clm-server/report'
 
         println()
         println('Nexus IQ Applications')
         println()
+
+        if (!dirExists(iqReportsDir)){
+            println 'Could not find sonatype workdir'
+            System.exit(0)
+        }
 
         File dir = new File(iqReportsDir)
 
@@ -44,6 +51,15 @@ class IQApplications {
 
         println('Number of applications: ' + numberOfApplications)
         println()
+    }
+
+    static Boolean dirExists(dir){
+        if (new File(dir).exists()){
+            return true
+        }
+        else {
+            return false
+        }
     }
 
     static def countApplicationReports(applicationReportsDir){
