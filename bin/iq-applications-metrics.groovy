@@ -43,7 +43,7 @@ class IQApplications {
 
                 println('name: ' + applicationName)
                 println('  id: ' + applicationId )
-                println('  number of scans: ' + numberOfReports)
+                println('  number of reports (scans): ' + numberOfReports)
                 reportDates(iqReportsDir + '/' + applicationId)
                 println()
             }
