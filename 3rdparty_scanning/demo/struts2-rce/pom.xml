@@ -34,6 +34,7 @@
     <name>Struts 2 Rest Showcase Webapp</name>
     <description>Struts 2 Rest Showcase Example</description>
 
+		<!--
     <distributionManagement>
         <snapshotRepository>
             <id>nexus</id>
@@ -44,6 +45,7 @@
             <url>http://18.188.100.16:8081/repository/maven-releases/</url>
         </repository>
     </distributionManagement>
+		-->
 
     <dependencies>
         <dependency>

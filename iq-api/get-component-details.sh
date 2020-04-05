@@ -6,11 +6,11 @@
 
 #curl --silent -u admin:admin123 -X GET http://localhost:8070/api/v2/search/component | python -m json.tool
 
-
-curl -u admin:admin123 -X POST -H "Content-Type: application/json" -d '{"components":[{"hash": null,"componentIdentifier": {"format":"maven","coordinates": {"artifactId":"tomcat-util","extension":"jar","groupId":"tomcat","version":"5.5.23"}}}]}' 'http://localhost:8070/api/v2/components/details' | python -m json.tool
-
-#curl -u admin:admin123 -X POST -H "Content-Type: application/json" -d '{"components":[{"hash": null,"componentIdentifier": {"format":"maven"}}]}' 'http://localhost:8070/api/v2/components/details' | python -m json.tool
-
-
-
 # curl -u admin:admin123 -X GET -H "Content-Type: application/json" "http://localhost:8070/api/v2/search/component?stageId=build&packageUrl=pkg:maven/commons-beanutils/commons-beanutils@1.6?type=jar"
+
+#curl -u admin:admin123 -X POST -H "Content-Type: application/json" -d '{"components":[{"hash": null,"componentIdentifier": {"format":"maven","coordinates": {"artifactId":"tomcat-util","extension":"jar","groupId":"tomcat","version":"5.5.23"}}}]}' 'http://localhost:8070/api/v2/components/details' | python -m json.tool
+
+#curl -u admin:admin123 -X POST -H "Content-Type: application/json" -d '{"components":[{"packageUrl":"pkg:maven/tomcat/tomcat-util@5.5.23?type=jar"}]}' 'http://localhost:8070/api/v2/components/details' | python -m json.tool
+
+curl -u admin:admin123 -X POST -H "Content-Type: application/json" -d '{"components":[{"packageUrl":"pkg:maven/org.apache.httpcomponents/httpclient@4.3.2?type=jar"}]}' 'http://localhost:8070/api/v2/components/details' | python -m json.tool
+
