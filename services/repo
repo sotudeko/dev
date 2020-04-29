@@ -1,4 +1,1 @@
-#!/bin/bash
-
-/opt/nxrm3/latest/bin/nexus $1
-
+/opt/nxrm3/latest/bin/nexus

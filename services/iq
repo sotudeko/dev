@@ -1,5 +1,1 @@
-#!/bin/bash
-
-/Users/sotudeko/Development/mygithub/dev/services/nexus-iq-server.sh $1
-
-
+./nexus-iq-server.sh

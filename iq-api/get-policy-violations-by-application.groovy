@@ -9,7 +9,7 @@ class NXRM3Components {
       def repositoryUrl = args[0]
       def repositoryName = args[1]
 
-      def policyId = '2afbb0011e1f4190a1721824502fffa2'
+      def policyId = '4c3e614a111a48d3a4f6420b98311cb6'
 
       def endpoint = repositoryUrl + '/api/v2/policyViolations'
       def query = '?p=' + policyId
