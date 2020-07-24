@@ -87,9 +87,9 @@ func main(){
 				SecurityStatus := components.Components[i].SecurityData.SecurityIssues[j].Status
 				SecurityReference := components.Components[i].SecurityData.SecurityIssues[j].Reference
 				SecuritySeverity := components.Components[i].SecurityData.SecurityIssues[j].Severity
-				fmt.Println("      Security Status: " + SecurityStatus)
-				fmt.Println("      Security Reference: " + SecurityReference)
-				fmt.Println("      Security Severity: " + SecuritySeverity)
+				fmt.Println("    - Security Status: " + SecurityStatus)
+				fmt.Println("    Security Reference: " + SecurityReference)
+				fmt.Println("    Security Severity: " + SecuritySeverity)
 			}
 
 			fmt.Println("")

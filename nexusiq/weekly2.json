@@ -1,0 +1,18 @@
+{
+  "timePeriod": "WEEK",
+  "firstTimePeriod": "2020-W22",
+  "lastTimePeriod": "2020-W26",
+  "applicationIds": [
+    "php-app",
+    "webgoat-legacy-ci",
+    "ui-app-scan",
+    "spring-data",
+    "GatekeeperPlugin",
+    "php-app2",
+    "webwolf",
+    "nuget-core",
+    "snakeyaml19",
+    "webgoat"
+  ],
+  "organizationIds": []
+}

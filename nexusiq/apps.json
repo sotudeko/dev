@@ -1,0 +1,49 @@
+{
+  "applications": [
+   {
+    "application": "GatekeeperPlugin",
+   },
+   {
+    "application": "jdom",
+   },
+   {
+    "application": "jira1",
+   },
+   {
+    "application": "jira2",
+   },
+   {
+    "application": "netty",
+   },
+   {
+    "application": "nuget-core",
+   },
+   {
+    "application": "php-app",
+   },
+   {
+    "application": "php-app2",
+   },
+   {
+    "application": "phpapp3",
+   },
+   {
+    "application": "snakeyaml19",
+   },
+   {
+    "application": "spring-data",
+   },
+   {
+    "application": "ui-app-scan",
+   },
+   {
+    "application": "webgoat",
+   },
+   {
+    "application": "webgoat-legacy-ci",
+   },
+   {
+    "application": "webwolf",
+   },
+  ]
+}
