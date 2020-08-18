@@ -27,6 +27,15 @@ def getApplicationName(urlPath):
 	return(l[3])
 
 
+def writeJsonToFile(applicationEvaluations, fileName):
+    with open(fileName, 'w', encoding='utf-8') as fd:
+        json.dump(applicationEvaluations, fd, ensure_ascii=False, indent=4)
+
+    print(fileName)
+    
+    return
+
+
 def writeEvaluationInfo(applicationEvaluations):
 
     with open('applicationcomponents.csv', 'w') as fd:
@@ -59,16 +68,14 @@ def writeEvaluationInfo(applicationEvaluations):
 
 
 def main():
-	applicationEvaluations = getNexusIqData('/api/v2/reports/applications')
 
-	with open("applicationevaluations.json", 'w') as fd:
-    		json.dump(applicationEvaluations, fd)
+	applicationEvaluations = getNexusIqData('/api/v2/reports/applications')
     
-	print('applicationevaluations.json')
+    writeJsonToFile(applicationEvaluations, "applicationevaluations.json")
 
 	writeEvaluationInfo(applicationEvaluations)
 
-	print('applicationcomponents.csv')
+	print('evaluationInfo.csv')
 	
 
 				
